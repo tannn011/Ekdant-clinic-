@@ -402,10 +402,50 @@
                     </ul>
                 </div>
              <div class="footer-section">
-  <h3>Services</h3>
+    <h3>Services</h3>
   <ul>
     <li><a href="#services">General Dentistry</a></li>
     <li><a href="#services">Cosmetic Dentistry</a></li>
     <li><a href="#services">Root Canal Treatment</a></li>
     <li><a href="#services">Orthodontics</a></li>
-    <li><a hr
+    <li><a href="#services">Dental Implants</a></li>
+    <li><a href="#services">Pediatric Dentistry</a></li>
+    <li><a href="#services">Oral Surgery</a></li>
+    <li><a href="#services">Emergency Care</a></li>
+  </ul>
+</div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const form = document.getElementById("contactForm");
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const service = document.getElementById("service").value;
+        const message = document.getElementById("message").value;
+
+        const whatsappNumber = "918605463560"; // PUT YOUR REAL NUMBER
+
+        const whatsappMessage =
+            "New Appointment Request:\n\n" +
+            "Full Name: " + name + "\n" +
+            "Email: " + email + "\n" +
+            "Phone: " + phone + "\n" +
+            "Service: " + service + "\n" +
+            "Message: " + message;
+
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+
+        window.open("https://wa.me/" + whatsappNumber + "?text=" + encodedMessage, "_blank");
+    });
+
+});
+</script>
+</body>
+</html>
