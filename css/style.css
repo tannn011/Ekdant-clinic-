@@ -24,9 +24,8 @@
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
+
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -234,7 +233,7 @@ ul {
     background: transparent;
     border-color: var(--white);
     color: var(--white);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
 }
 
@@ -753,7 +752,7 @@ ul {
 
 /* ==================== 
    Animations 
-   ==================== */
+==================== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -763,6 +762,18 @@ ul {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Scroll Fade Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+}
+
+.fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* ==================== 
@@ -848,5 +859,5 @@ ul {
     .about-stats {
         grid-template-columns: repeat(2, 1fr);
     }
-                                }
-  
+   }
+       
