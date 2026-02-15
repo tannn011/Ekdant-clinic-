@@ -1,60 +1,102 @@
-// ==================== 
-// Mobile Menu Toggle
-// ==================== 
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+// ========== Mobile menu toggle ==========
+const mobileBtn = document.querySelector('.mobile-menu-btn');
 const navMenu = document.querySelector('.nav-menu');
+
+if (mobileBtn && navMenu) {
+  mobileBtn.addEventListener('click', () => {
+    navMenu.classList.toggle('open');
+    mobileBtn.classList.toggle('open');
+  });
+
+  // Close menu when a nav link is clicked (mobile UX)
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      mobileBtn.classList.remove('open');
+    });
+  });
+}
+
+// ========== Active nav link while scrolling ==========
+const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 
-// Toggle mobile menu
-mobileMenuBtn.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    
-    // Animate hamburger icon
-    const spans = mobileMenuBtn.querySelectorAll('span');
-    spans[0].style.transform = navMenu.classList.contains('active') 
-        ? 'rotate(45deg) translate(5px, 5px)' 
-        : 'rotate(0) translate(0, 0)';
-    spans[1].style.opacity = navMenu.classList.contains('active') ? '0' : '1';
-    spans[2].style.transform = navMenu.classList.contains('active') 
-        ? 'rotate(-45deg) translate(7px, -6px)' 
-        : 'rotate(0) translate(0, 0)';
-});
+const setActiveLink = (id) => {
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
+  });
+};
 
-// Close mobile menu when clicking on a link
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        
-        // Reset hamburger icon
-        const spans = mobileMenuBtn.querySelectorAll('span');
-        spans[0].style.transform = 'rotate(0) translate(0, 0)';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = 'rotate(0) translate(0, 0)';
+if (sections.length) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActiveLink(entry.target.id);
     });
-});
+  }, { threshold: 0.6 });
 
-// ==================== 
-// Active Navigation Link
-// ==================== 
-window.addEventListener('scroll', () => {
-    let current = '';
-    const sections = document.querySelectorAll('section');
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.pageYOffset >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
+  sections.forEach(sec => observer.observe(sec));
+}
 
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-});
+// ========== Contact form -> WhatsApp ==========
+const contactForm = document.getElementById('contactForm');
+
+// PUT YOUR WHATSAPP NUMBER HERE (with country code, no +, no spaces)
+// Example India: 919876543210
+const WHATSAPP_NUMBER = "919876543210";
+
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name')?.value.trim();
+    const email = document.getElementById('email')?.value.trim();
+    const phone = document.getElementById('phone')?.value.trim();
+    const service = document.getElementById('service')?.value;
+    const message = document.getElementById('message')?.value.trim();
+
+if (name.trim() === "" || email.trim() === "" || phone.trim() === "" || service === "" || message.trim() === "") {
+    alert("Please fill all fields properly.");
+    return;
+}
+
+    // Basic validation
+    if (!name || !email || !phone || !service || !message) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    // Optional: make service label nicer
+    const serviceLabelMap = {
+      "general": "General Dentistry",
+      "cosmetic": "Cosmetic Dentistry",
+      "root-canal": "Root Canal Treatment",
+      "orthodontics": "Orthodontics",
+      "implants": "Dental Implants",
+      "pediatric": "Pediatric Dentistry",
+      "surgery": "Oral Surgery",
+      "emergency": "Emergency Care"
+    };
+
+    const serviceNice = serviceLabelMap[service] || service;
+
+    const text =
+`New Appointment Request - Ekdanta Clinic
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Service: ${serviceNice}
+Message: ${message}`;
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+
+    // Open WhatsApp with prefilled message
+    window.open(url, "_blank", "noopener,noreferrer");
+
+    // Optional: reset form after opening WhatsApp
+    contactForm.reset();
+  });
+}
+
 
 // ==================== 
 // Smooth Scrolling for Navigation Links
